@@ -16,7 +16,7 @@ public class FrequencyTable {
         //added by 1 because the way I coded my array to corespond with the sum values, the sum will be associated with the index 
         //the number of dice less than it, but this makes it only go through all, but the last value in the array since it includes the end point.
 
-        for (int i = 0; i < 100; i++) { //this code is for each roll round that is simulated
+        for (int i = 0; i < 10000; i++) { //this code is for each roll round that is simulated
             int sumTemp = 0;
 
             for (int rolls = 0; rolls < dice.length; rolls++) {
@@ -34,6 +34,6 @@ public class FrequencyTable {
         for (int i = 0; i < sum.length; i++) {  //prints all sums that occured
             System.out.println((i + numberDice) + ": " + sum[i]);
         }
-
+        System.out.println((int) 7 / 2);
     }
 }
