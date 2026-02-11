@@ -13,21 +13,23 @@ public class SymettricalImage {
 
         String[][] image = new String[n][m];
         int[] numPerRow = new int[n];
-        int num = (n * m) / 2;
-        //my code is wierd so im adjusting the calculation for num
+        int num = (n * m) / 4;
+        System.out.println("Number of Stars should be " + num);
+        //for a cooler image because i go above and beyond
+        int numMaxPerRow = (int) num / (m / 2);
         for (int i = 0; i < image.length; i++) {
             boolean isEnd = true;
-            double random = (Math.random() * (m));
+            double random = (Math.random() * (numMaxPerRow));
             int randomRounded = (int) Math.round(random);
 
             //this area is to check if the number of generated stars on the row is possible
             //for example, an uneven number cannot be even on an even number of columns
             while (((m % 2) != 0) && ((randomRounded % 2) == 0)) {
-                random = (Math.random() * (m));
+                random = (Math.random() * (numMaxPerRow));
                 randomRounded = (int) Math.round(random);
             }
             while (((m % 2) == 0) && ((randomRounded % 2) != 0)) {
-                random = (Math.random() * (m));
+                random = (Math.random() * (numMaxPerRow));
                 randomRounded = (int) Math.round(random);
             }
 
@@ -40,18 +42,18 @@ public class SymettricalImage {
                         randomRounded = num;
                     }
                 } else {
-                    random = (Math.random() * (m));
+                    random = (Math.random() * (numMaxPerRow));
                     randomRounded = (int) Math.round(random);
                 }
                 if (isEnd == false) {
 
                     //to redo entire generation
                     while (((m % 2) != 0) && ((randomRounded % 2) == 0)) {
-                        random = (Math.random() * (m));
+                        random = (Math.random() * (numMaxPerRow));
                         randomRounded = (int) Math.round(random);
                     }
                     while (((m % 2) == 0) && ((randomRounded % 2) != 0)) {
-                        random = (Math.random() * (m));
+                        random = (Math.random() * (numMaxPerRow));
                         randomRounded = (int) Math.round(random);
                     }
                 }
@@ -68,96 +70,38 @@ public class SymettricalImage {
         System.out.println("\n \n Image Generationing... \n");
 
         for (int i = 0; i < image.length; i++) {
-            if ((image[i].length % 2) != 0) {// checking even or odd
-                for (int j = 0; j < image[i].length; j++) {
 
-                    if ((numPerRow[i] % 2) != 0) {
-                        int counter = 2;
-                        int numOfSpaces = (image[i].length - numPerRow[i]) / 2;
-                        //for this we know that if the number is odd, then there must be on in the middle and the remainer on each side\
-                        int middle = ((image[i].length) / 2);//correct by index
-                        if ((j != middle) && (j < middle) && (numOfSpaces != 0)) {
-                            double space = Math.random();
-                            if (space >= 0.5) {
-                                image[i][j] = ".";
-                            } else {
-                                image[i][j] = "*";
-                            }
-                        } else if ((j == middle)) {
-                            image[i][j] = "*";
-                        } else {
-                            image[i][j] = image[i][(j - counter)];
-                            counter += 2;
-                        }
-                    } else {
-                        //this is the case in which the number of columns are uneven, but even number of Stars
-                        int numOfSpaces = ((image[i].length - numPerRow[i]) / 2) + 1; //1 added do to round down
-                        int middle = ((image[i].length) / 2);
-                        int counter = 2;
-                        if ((j != middle) && (j < middle) && (numOfSpaces != 0)) {
-                            double space = Math.random();
-                            if (space >= 0.5) {
-                                image[i][j] = ".";
-                            } else {
-                                image[i][j] = "*";
-                            }
-                            image[i][image[i].length - 1 - j] = image[i][j];
-                        } else if ((j == middle)) {
-                            image[i][j] = ".";
-                        }
-                    }
-                    if (image[i].length % 2 != 0) {
-                        int middle = image[i].length / 2;
+            int stars = numPerRow[i];
+            int half = image[i].length / 2;
 
-                        double space = Math.random();
+            // Fill left half
+            int starsOnLeft = stars / 2;
 
-                        if (space >= 0.5) {
-                            image[i][middle] = ".";
-                        } else {
-                            image[i][middle] = "*";
-                        }
-                    }
-                    image[i][image[i].length - 1 - j] = image[i][j];
+            for (int j = 0; j < half; j++) {
+                if (j < starsOnLeft) {
+                    image[i][j] = "*";
+                } else {
+                    image[i][j] = ".";
                 }
-                if (image[i].length % 2 != 0) {
-                    int middle = image[i].length / 2;
+            }
 
-                    double space = Math.random();
-
-                    if (space >= 0.5) {
-                        image[i][middle] = ".";
-                    } else {
-                        image[i][middle] = "*";
-                    }
+            // Handle middle if odd number of columns
+            if (image[i].length % 2 != 0) {
+                int middle = half;
+                if (stars % 2 != 0) {
+                    image[i][middle] = "*";
+                } else {
+                    image[i][middle] = ".";
                 }
-            } else {// even
-                int counter = -1;
-                for (int j = 0; j < image[i].length; j++) {
+            }
 
-                    int numOfSpaces = (image[i].length - numPerRow[i]) / 2;
-                    int halfwayIndex = (image[i].length / 2);
-                    if ((j < halfwayIndex) && (numOfSpaces != 0)) {
-                        double space = Math.random();
-                        if (space >= 0.5) {
-                            image[i][j] = ".";
-                        } else {
-                            image[i][j] = "*";
-                        }
-
-                    } else {
-                        image[i][j] = "*";
-                    }
-                    if (j >= halfwayIndex) {
-                        image[i][j] = image[i][image[i].length - j - 1];
-                    }
-                }
+            // Mirror left half to right half
+            for (int j = 0; j < half; j++) {
+                image[i][image[i].length - 1 - j] = image[i][j];
             }
         }
 
         System.out.println("Image Generation Done! \n \n ");
-        for (int i = 0; i < image[0].length; i++) {
-            System.out.print(image[3][i]);
-        }
 
         System.out.println("Printed image \n");
         for (int i = 0; i < image.length; i++) {
